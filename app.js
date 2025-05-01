@@ -41,6 +41,14 @@ app.post("/books", async function(req, res) {
 
   const { bookName, bookPrice, bookAuthor, bookGenre } = req.body;
 //   console.log(`${bookName} : ${bookPrice}`)
+
+if(!bookName || !bookPrice || !bookAuthor || !bookGenre){
+    return res.status(400).json({
+        message: "All fields are required"
+    })
+}
+
+try{
 await books.create({
     bookName,
     bookPrice,
@@ -51,6 +59,12 @@ await books.create({
   res.json({
     message: "Book added Successfully",
   });
+}catch(error){
+    res.status(500).json({
+        message: "Error adding book to the database",
+        error: error.message,
+    })
+}
 });
 
 app.delete("/books/:id", function (req, res) {
