@@ -1,6 +1,7 @@
 let express = require("express");
 const { books } = require("./database/connection.js");
 const app = express();
+app.use(express.json());
 
 require("./database/connection.js");
 // app.get("/", (req, res)=>{  //(in sequence request , response)
@@ -31,8 +32,22 @@ app.get("/books", async function (req, res) {
   });
 });
 
-app.post("/books", function (req, res) {
+app.post("/books", async function(req, res) {
   //logic to add book to database goes here...
+  console.log(req.body)
+//   const bookName = req.body.bookName;
+//   const bookPrice = req.body.bookPrice;
+//   console.log(`${bookName}:${bookPrice}`);
+
+  const { bookName, bookPrice, bookAuthor, bookGenre } = req.body;
+//   console.log(`${bookName} : ${bookPrice}`)
+await books.create({
+    bookName,
+    bookPrice,
+    bookAuthor,
+    bookGenre
+})
+
   res.json({
     message: "Book added Successfully",
   });
