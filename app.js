@@ -1,6 +1,8 @@
 let express = require("express");
+const { books } = require("./database/connection.js");
 const app = express();
 
+require("./database/connection.js");
 // app.get("/", (req, res)=>{  //(in sequence request , response)
 //     // res.send("<h1>Hello world!</h1>");
 //     // res.send("Hello world!");
@@ -20,10 +22,12 @@ const app = express();
 //     })
 // })
 
-app.get("/books", function (req, res) {
+app.get("/books", async function (req, res) {
   //logic to fetch books from database
+  const booksData = await books.findAll(); //equivalent to "select * from books"
   res.json({
     message: "Books fetched Successfully",
+    data: booksData
   });
 });
 
@@ -35,14 +39,14 @@ app.post("/books", function (req, res) {
 });
 
 app.delete("/books/:id", function (req, res) {
-    //logic to delete book
+  //logic to delete book
   res.json({
     message: "Book deleted Successfully",
   });
 });
 
 app.patch("/books/:id", function (req, res) {
-    //logic to update book
+  //logic to update book
   res.json({
     message: "Book updated Successfully",
   });
