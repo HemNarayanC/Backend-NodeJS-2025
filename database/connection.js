@@ -1,3 +1,7 @@
+
+
+require("dotenv").config();
+
 //we will be writing the code/logic for database connection
 
 // const sequelize = require("sequelize");
@@ -13,7 +17,7 @@ const sequelize = sequelize.Sequelize;
 const DataTypes = sequelize.DataTypes;*/
 
 const sequelize = new Sequelize(
-  "postgresql://postgres.rbcpnignllcorrossaxt:Ra1n6037Colors@8520@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+  process.env.SUPABASE_CONNECTION_STRING
 ); //object instantiation
 
 sequelize
