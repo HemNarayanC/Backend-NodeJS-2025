@@ -1,9 +1,13 @@
 let express = require("express");
-const { books } = require("./database/connection.js");
+const { fetchBooks, addBook, deleteBook, editBook } = require("./controllers/book.controller.js");
+
+const bookRoute = require("./routes/bookRoute.js")
+
 const app = express();
 app.use(express.json());
 
-require("./database/connection.js");
+
+// require("./database/connection.js");
 // app.get("/", (req, res)=>{  //(in sequence request , response)
 //     // res.send("<h1>Hello world!</h1>");
 //     // res.send("Hello world!");
@@ -23,63 +27,7 @@ require("./database/connection.js");
 //     })
 // })
 
-app.get("/books", async function (req, res) {
-  //logic to fetch books from database
-  const booksData = await books.findAll(); //equivalent to "select * from books"
-  res.json({
-    message: "Books fetched Successfully",
-    data: booksData
-  });
-});
-
-app.post("/books", async function(req, res) {
-  //logic to add book to database goes here...
-  console.log(req.body)
-//   const bookName = req.body.bookName;
-//   const bookPrice = req.body.bookPrice;
-//   console.log(`${bookName}:${bookPrice}`);
-
-  const { bookName, bookPrice, bookAuthor, bookGenre } = req.body;
-//   console.log(`${bookName} : ${bookPrice}`)
-
-if(!bookName || !bookPrice || !bookAuthor || !bookGenre){
-    return res.status(400).json({
-        message: "All fields are required"
-    })
-}
-
-try{
-await books.create({
-    bookName,
-    bookPrice,
-    bookAuthor,
-    bookGenre
-})
-
-  res.json({
-    message: "Book added Successfully",
-  });
-}catch(error){
-    res.status(500).json({
-        message: "Error adding book to the database",
-        error: error.message,
-    })
-}
-});
-
-app.delete("/books/:id", function (req, res) {
-  //logic to delete book
-  res.json({
-    message: "Book deleted Successfully",
-  });
-});
-
-app.patch("/books/:id", function (req, res) {
-  //logic to update book
-  res.json({
-    message: "Book updated Successfully",
-  });
-});
+app.use("/api/books", bookRoute);
 
 app.listen(5000, function () {
   console.log("server has started at port: 5000");
