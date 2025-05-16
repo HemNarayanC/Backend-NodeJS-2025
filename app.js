@@ -1,9 +1,16 @@
 let express = require("express");
+const cors = require("cors");
 const { fetchBooks, addBook, deleteBook, editBook } = require("./controllers/book.controller.js");
 
 const bookRoute = require("./routes/bookRoute.js")
 
 const app = express();
+
+app.use(cors(
+  {
+    origin: "*", 
+  }
+)); //to allow cross-origin requests
 app.use(express.json());
 
 
